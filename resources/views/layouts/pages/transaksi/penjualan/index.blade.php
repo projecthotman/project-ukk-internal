@@ -5,14 +5,14 @@
 @section('content')
     @include('partials.alert')
     <div class="body flex-grow-1 px-3">
-        <div class="container-lg">
+        <div class="container-fluid">
             <div class="card mb-4">
                 <table class="table">
                     <thead class="table-dark">
                         <tr>
                             <th>NO</th>
                             <th>NAMA</th>
-                            <th>STOK</th>
+                            <th>JUMLAH</th>
                             <th>KATEGORI</th>
                             <th>KETERANGAN</th>
                             <th>HARGA</th>
@@ -28,11 +28,11 @@
                             <tr>
                                 <td>{{ $n++ }}</td>
                                 <td>{{ Str::limit($i->nama, 35) }}</td>
-                                <td>{{ $i->stok }}</td>
+                                <td>{{ $i->history->jumlah }}</td>
                                 <td>{{ $i->kategori->nama }}</td>
                                 <td>{{ Str::limit($i->deskripsi, 50) }}</td>
-                                <td>{{number_format($i->harga->harga_tj, 0, ',', '.') }}</td>
-                                <td>{{ $i->created_at->format('l - d M Y H:i:s') }}</td>
+                                <td>{{number_format($i->history->harga, 0, ',', '.') }}</td>
+                                <td>{{ $i->created_at->translatedFormat('l - d F Y/H:i:s') }}</td>
                                 <td>
                                     <button class="nav-link nav-group-toggle" type="button" style="border: none; background-color: transparent; margin-left: 25px;">
                                         <svg class="nav-icon" style="width: 20px; height: 20px;">

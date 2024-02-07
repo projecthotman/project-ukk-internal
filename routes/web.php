@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\pembelianController;
+use App\Http\Controllers\pendapatanController;
 use App\Http\Controllers\penjualanController;
 use App\Http\Controllers\transaksiController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('layouts.app');
 });
+
+Route::get('500', function () {
+    return view('layouts.pages.error.500');
+})->name('error');
 
 Route::middleware(['web', 'auth'])->group(function () {
     // Grup rute untuk pengguna dengan level admin
@@ -56,13 +61,16 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('Transaksi/Pembelian/Proses', [transaksiController::class, 'protrapem'])->name('proses-transaksi-pembelian');
     // penjualan
     Route::get('Transaksi/Penjualan', [transaksiController::class, 'intrapen'])->name('index-transaksi-penjualan');
-
+    Route::get('Pendapatan', [pendapatanController::class, 'index'])->name('pendapatan');
 });
 
 
 // route auth
-Route::get('/Login', [AuthController::class, 'login'])->name('login-view');
-Route::get('/Register', [AuthController::class, 'register'])->name('register-view');
-Route::post('/Register-store-daftar/masuk/data/akun', [AuthController::class, 'registerStore'])->name('register-store');
-Route::post('/Login-action-masuk/session/data/akun', [AuthController::class, 'loginAction'])->name('login-action');
+Route::middleware('guest')->group(function () {
+    Route::get('/Login', [AuthController::class, 'login'])->name('login-view');
+    Route::get('/Register', [AuthController::class, 'register'])->name('register-view');
+    Route::post('/Register-store-daftar/masuk/data/akun', [AuthController::class, 'registerStore'])->name('register-store');
+    Route::post('/Login-action-masuk/session/data/akun', [AuthController::class, 'loginAction'])->name('login-action');
+});
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

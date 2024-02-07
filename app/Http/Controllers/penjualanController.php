@@ -9,6 +9,7 @@ use App\Models\historyModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class penjualanController extends Controller
 {
@@ -18,9 +19,8 @@ class penjualanController extends Controller
     $user_id = auth()->id();
 
     // Mengambil barang untuk dijual dengan relasi yang dibutuhkan dan berdasarkan user_id
-    $brnga = BarangModel::with(['kategori', 'gambar', 'harga'])
+    $brnga = BarangModel::with(['kategori', 'gambar', 'harga', 'user'])
         ->where('status', 'jual')
-        ->where('id_user', $user_id) // Menambahkan kondisi user_id di sini
         ->get();
 
     // Mengambil barang yang masih untuk pembelian dengan relasi harga yang dibutuhkan dan berdasarkan user_id
@@ -87,13 +87,16 @@ class penjualanController extends Controller
         $barang->harga->update([
             'harga_tb' => $barang->harga->harga_tb - ($hb * $request->stok),
         ]);
-
+        $id_transk = $this->generateIdTransk($barang->created_at, $barang->id, $user_id);
         // Membuat instance baru dari history
         HistoryModel::create([
             'id_user' => $user_id,
             'id_barang' => $barangB->id,
             'tanggal' => $barang->history->tanggal,
             'nama' => "jual",
+            'jumlah' => $request->stok,
+            'id_transk' => $id_transk,
+            'harga' => ($barang->harga->harga_b + ($barang->harga->harga_b * ($request->untung / 100))) * $rs,
         ]);
 
         // Hapus barang jika stoknya habis
@@ -112,5 +115,20 @@ class penjualanController extends Controller
         return redirect()->route('index-barang-jual')->with('success', 'Barang dimasukkan ke data barang jual');
 
 }
+
+
+
+private function generateIdTransk($created_at, $id_barang, $id_user)
+    {
+        // Contoh cara penggabungan data untuk id_transk
+        $datePart = now()->format('Ymd');
+        $idBarangPart = str_pad($id_barang, 5, '0', STR_PAD_LEFT);
+        $idUserPart = str_pad($id_user, 5, '0', STR_PAD_LEFT);
+
+        // Gabungkan bagian-bagian tersebut untuk membentuk id_transk
+        $id_transk = $datePart . $idBarangPart . $idUserPart . Str::random(5);
+
+        return $id_transk;
+    }
 
 }

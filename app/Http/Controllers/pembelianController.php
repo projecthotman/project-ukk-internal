@@ -10,6 +10,7 @@ use App\Models\KategoriModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class pembelianController extends Controller
 {
@@ -81,13 +82,17 @@ class pembelianController extends Controller
                     'harga_tb' => $request->harga_b * $request->stok,
                 ]);
 
+                $id_transk = $this->generateIdTransk($barang->created_at, $barang->id, $user_id);
+
                 historyModel::create([
                     'id_barang' => $barang->id,
                     'id_user' => $user_id,
                     'tanggal' => $barang->created_at,
                     'nama' => 'beli',
+                    'jumlah' => $request->stok,
+                    'id_transk' => $id_transk,
+                    'harga' => $request->harga_b * $request->stok,
                 ]);
-
                 // Menyimpan gambar ke direktori public/storage/gambar_barang
                 if ($g) {
                     $g->move(public_path('storage/gambar_barang'), $namaFile);
@@ -112,5 +117,20 @@ class pembelianController extends Controller
 
             return redirect()->route('index-barang-beli')->with('error', 'Terjadi kesalahan. Barang gagal dibeli. Pesan Error: ' . $e->getMessage());
         }
+    }
+
+
+
+    private function generateIdTransk($created_at, $id_barang, $id_user)
+    {
+        // Contoh cara penggabungan data untuk id_transk
+        $datePart = now()->format('Ymd');
+        $idBarangPart = str_pad($id_barang, 5, '0', STR_PAD_LEFT);
+        $idUserPart = str_pad($id_user, 5, '0', STR_PAD_LEFT);
+
+        // Gabungkan bagian-bagian tersebut untuk membentuk id_transk
+        $id_transk = $datePart . $idBarangPart . $idUserPart . Str::random(5);
+
+        return $id_transk;
     }
 }

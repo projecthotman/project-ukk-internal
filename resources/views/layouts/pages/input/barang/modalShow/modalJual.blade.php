@@ -22,7 +22,14 @@
                         <p><strong>Status:</strong> {{ $b->status }}</p>
                     </div>
                 </div>
-
+                <div class="row-md-12 d-flex align-items-center">
+                    @if($b->user->gambar != null)
+                        <img src="{{ asset('storage/gambar/' . $b->user->gambar) }}" alt="User Image" class="img-fluid rounded-circle" style="width: 50px; height: 50px;">
+                    @else
+                        <img src="{{ asset('assets/img/default.png') }}" alt="Default Image" class="img-fluid rounded-circle" style="width: 40px; height: 40px;">
+                    @endif
+                    <p class="mt-3 ms-3">{{ $b->user->name }}</p>
+                </div>
                 <!-- Description Row -->
                 <div class="row mt-3">
                     <div class="col-md-12">
@@ -42,6 +49,7 @@
             </div>
             <div class="modal-footer bg-light">
                 <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-coreui-dismiss="modal">Beli</button>
             </div>
         </div>
     </div>
