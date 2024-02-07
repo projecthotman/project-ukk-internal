@@ -16,9 +16,12 @@ class CreateHistoryTable extends Migration
         Schema::create('tbl_history', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_barang');
+            $table->unsignedBigInteger('id_user');
             $table->string('nama');
             $table->datetime('tanggal');
             $table->timestamps();
+
+            $table->foreign('id_user')->references('id')->on('users');
         });
     }
 

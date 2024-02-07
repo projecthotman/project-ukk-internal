@@ -15,9 +15,12 @@ class CreateKategoriTable extends Migration
     {
         Schema::create('tbl_kategori', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_user');
             $table->string('nama');
             $table->string('gambar')->nullable();
             $table->timestamps();
+
+            $table->foreign('id_user')->references('id')->on('users');
         });
     }
 

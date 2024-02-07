@@ -34,7 +34,7 @@
                     <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-line-weight"></use>
                 </svg> Barang</a>
             <ul class="nav-group-items">
-                <li class="nav-item"><a class="nav-link" href="{{ route('index-barang-gudang') }}"><span class="nav-icon"></span>
+                <li class="nav-item"><a class="nav-link" href="{{ route('index-barang-beli') }}"><span class="nav-icon"></span>
                         Gudang</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('index-barang-jual') }}"><span class="nav-icon"></span>
                         Post</a></li>
@@ -46,16 +46,22 @@
                     <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-layers"></use>
                 </svg> Login
             </a></li>
-        <li class="nav-item"><a class="nav-link nav-link-danger" href="https://coreui.io/pro/" target="_top">
+        <li class="nav-item"><a class="nav-link nav-link-danger" href="{{ route('register-view') }}" target="_top">
                 <svg class="nav-icon">
                     <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-layers"></use>
                 </svg> Register
             </a></li>
-        <li class="nav-item"><a class="nav-link nav-link-danger" href="https://coreui.io/pro/" target="_top">
-                <svg class="nav-icon">
-                    <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-layers"></use>
-                </svg> Logout
-            </a></li>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                @csrf
+                <li class="nav-item">
+                    <button type="submit" class="nav-link nav-link-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <svg class="nav-icon">
+                            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-layers"></use>
+                        </svg> Logout
+                    </button>
+                </li>
+            </form>
+
     </ul>
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
 </div>

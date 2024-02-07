@@ -16,6 +16,7 @@ class kategoriSeeder extends Seeder
     {
         KategoriModel::create([
             'id' => 1,
+            'id_user' => 2,
             'nama' => "Pakaian Pria",
             'gambar' => "1706062537145.jpg",
             'created_at' => now(),
@@ -23,6 +24,7 @@ class kategoriSeeder extends Seeder
         ]);
         KategoriModel::create([
             'id' => 2,
+            'id_user' => 2,
             'nama' => "Aksesoris Fasion",
             'gambar' => "1706062546363.jpg",
             'created_at' => now(),
@@ -30,6 +32,7 @@ class kategoriSeeder extends Seeder
         ]);
         KategoriModel::create([
             'id' => 3,
+            'id_user' => 2,
             'nama' => "Hobi & Koleksi",
             'gambar' => "1706062557482.jpg",
             'created_at' => now(),

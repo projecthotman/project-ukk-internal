@@ -10,5 +10,5 @@ class historyModel extends Model
     use HasFactory;
 
     protected $table = 'tbl_history';
-    protected $fillable = ['id_barang', 'nama', 'tanggal'];
+    protected $fillable = ['id_barang', 'nama', 'id_user', 'tanggal'];
 }

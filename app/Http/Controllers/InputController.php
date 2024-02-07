@@ -19,18 +19,6 @@ class InputController extends Controller
         ]));
     }
 
-    public function barangGudang()
-    {
-        $nk = kategoriModel::select('nama', 'id')->get();
-        $brng = BarangModel::with(['kategori', 'gambar', 'harga'])
-            ->where('status', 'beli')
-            ->get();
-        return view('layouts.pages.input.barang.index', compact([
-            'nk',
-            'brng',
-        ]));
-    }
-
 
     public function creatgor()
     {

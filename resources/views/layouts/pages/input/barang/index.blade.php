@@ -20,7 +20,7 @@
                 <div class="tab-content rounded-bottom">
                     <div class="tab-pane p-3 active preview" role="tabpanel" id="preview-1005">
                         <div class="row">
-                            @foreach ($brng as $b)
+                            @foreach ($barang as $b)
                             @include('layouts.pages.input.barang.modalShow.modalGudang')
                                 <!-- /.col-->
                                 <div class="col-6 col-lg-3">

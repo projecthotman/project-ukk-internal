@@ -7,23 +7,31 @@ use App\Models\gambarbarangModels;
 use App\Models\hargaBarangModel;
 use App\Models\historyModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class penjualanController extends Controller
 {
     public function barangJual()
-    {
-        $brnga = BarangModel::with(['kategori', 'gambar', 'harga'])
-            ->where('status', 'jual')
-            ->get();
-        $brngb = BarangModel::with(['harga'])
-            ->where('status', 'beli')
-            ->get();
-        return view('layouts.pages.input.barang.post', compact([
-            'brnga',
-            'brngb',
-        ]));
-    }
+{
+    // Mendapatkan user_id saat ini
+    $user_id = auth()->id();
+
+    // Mengambil barang untuk dijual dengan relasi yang dibutuhkan dan berdasarkan user_id
+    $brnga = BarangModel::with(['kategori', 'gambar', 'harga'])
+        ->where('status', 'jual')
+        ->where('id_user', $user_id) // Menambahkan kondisi user_id di sini
+        ->get();
+
+    // Mengambil barang yang masih untuk pembelian dengan relasi harga yang dibutuhkan dan berdasarkan user_id
+    $brngb = BarangModel::with(['harga'])
+        ->where('status', 'beli')
+        ->where('id_user', $user_id) // Menambahkan kondisi user_id di sini
+        ->get();
+
+    return view('layouts.pages.input.barang.post', compact('brnga', 'brngb'));
+}
+
 
     public function inju(Request $request)
 {
@@ -34,6 +42,7 @@ class penjualanController extends Controller
     ]);
 
     $barangId = $request->barang;
+    $user_id = Auth::user()->id;
 
     // Mencari barang berdasarkan ID dan mengambil yang statusnya "beli"
     $barang = BarangModel::with(['harga', 'history', 'gambar'])
@@ -46,6 +55,7 @@ class penjualanController extends Controller
         // Membuat instance baru dari barang yang dijual
         $barangB = BarangModel::create([
             'nama' => $barang->nama,
+            'id_user' => $user_id,
             'kategori_id' => $barang->kategori_id,
             'deskripsi' => $barang->deskripsi,
             'stok' => $rs,
@@ -80,6 +90,7 @@ class penjualanController extends Controller
 
         // Membuat instance baru dari history
         HistoryModel::create([
+            'id_user' => $user_id,
             'id_barang' => $barangB->id,
             'tanggal' => $barang->history->tanggal,
             'nama' => "jual",

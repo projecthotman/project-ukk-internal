@@ -11,7 +11,7 @@ class BarangModel extends Model
     use HasFactory;
 
     protected $table = 'tbl_barang';
-    protected $fillable = ['nama', 'kategori_id', 'deskripsi', 'stok', 'status']; // Mengganti 'gambar' menjadi 'gambar_id'
+    protected $fillable = ['nama', 'kategori_id', 'id_user', 'deskripsi', 'stok', 'status']; // Mengganti 'gambar' menjadi 'gambar_id'
 
     public function kategori()
     {

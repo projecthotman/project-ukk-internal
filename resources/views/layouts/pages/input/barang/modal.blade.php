@@ -19,7 +19,7 @@
                         <label class="form-label">Kategori</label>
                         <select class="form-select" aria-label="Default select example" name="kategori_id" required>
                             <option selected>Buka menu pilihan ini</option>
-                            @foreach ($nk as $n)
+                            @foreach ($kategori as $n)
                                 <option value="{{ $n->id }}">{{ $n->nama }}</option>
                             @endforeach
                         </select>

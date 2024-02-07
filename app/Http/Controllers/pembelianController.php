@@ -8,18 +8,29 @@ use App\Models\hargaBarangModel;
 use App\Models\historyModel;
 use App\Models\KategoriModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class pembelianController extends Controller
 {
     public function pembelian()
     {
-        $nk = KategoriModel::select('nama', 'id')->get();
-        return view('layouts.pages.transaksi.pembelian.index', compact([
-            'nk'
-        ]));
+        // Mengambil kategori dengan kolom nama dan id
+        $kategori = KategoriModel::select('nama', 'id')->get();
+
+        // Mendapatkan user_id saat ini
+        $user_id = auth()->id();
+
+        // Mengambil barang untuk pembelian dengan relasi yang dibutuhkan dan berdasarkan user_id
+        $barang = BarangModel::with(['kategori', 'gambar', 'harga'])
+            ->where('status', 'beli')
+            ->where('id_user', $user_id) // Menambahkan kondisi user_id di sini
+            ->get();
+
+        return view('layouts.pages.input.barang.index', compact('kategori', 'barang'));
     }
-    
+
+
 
     public function inpem(Request $request)
     {
@@ -32,9 +43,9 @@ class pembelianController extends Controller
             'stok' => 'required|numeric',
             'gambar_transaksi' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
-
         $g = $request->file('gambar');
         $gt = $request->file('gambar_transaksi');
+        $user_id = Auth::user()->id;
 
         try {
             // Mulai transaksi database
@@ -48,12 +59,12 @@ class pembelianController extends Controller
                 // Menyimpan data barang ke database dengan gambar_id yang baru saja dibuat
                 $barang = BarangModel::create([
                     'nama' => $request->nama,
+                    'id_user' => $user_id,
                     'kategori_id' => $request->kategori_id,
                     'deskripsi' => $request->deskripsi,
                     'stok' => $request->stok,
                     'status' => "beli",
                 ]);
-
                 // Menyimpan data gambar ke database
                 if ($g) {
                     gambarbarangModels::create([
@@ -72,6 +83,7 @@ class pembelianController extends Controller
 
                 historyModel::create([
                     'id_barang' => $barang->id,
+                    'id_user' => $user_id,
                     'tanggal' => $barang->created_at,
                     'nama' => 'beli',
                 ]);
@@ -93,12 +105,12 @@ class pembelianController extends Controller
             // Commit transaksi jika tidak ada error
             DB::commit();
 
-            return redirect()->route('index-barang-gudang')->with('success', 'Barang berhasil dibeli');
+            return redirect()->route('index-barang-beli')->with('success', 'Barang berhasil dibeli');
         } catch (\Exception $e) {
             // Rollback transaksi jika terjadi error
             DB::rollback();
 
-            return redirect()->route('index-barang-gudang')->with('error', 'Terjadi kesalahan. Barang gagal dibeli. Pesan Error: ' . $e->getMessage());
+            return redirect()->route('index-barang-beli')->with('error', 'Terjadi kesalahan. Barang gagal dibeli. Pesan Error: ' . $e->getMessage());
         }
     }
 }
