@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\pembelianController;
 use App\Http\Controllers\pendapatanController;
+use App\Http\Controllers\pengeluaranController;
 use App\Http\Controllers\penjualanController;
 use App\Http\Controllers\transaksiController;
 use Illuminate\Support\Facades\Route;
@@ -46,10 +47,15 @@ Route::middleware(['web', 'auth'])->group(function () {
     });
     // route dashboard
     Route::get('Dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('TopUp', [DashboardController::class, 'topUp'])->name('topUp');
+    Route::post('TopUpAction', [DashboardController::class, 'topUpAction'])->name('topUp-action');
+    Route::get('Pesan', [DashboardController::class, 'pesan'])->name('pesan');
 
     // route pembelian
     Route::get('Barang/Beli', [pembelianController::class, 'pembelian'])->name('index-barang-beli');
     Route::post('Pembelian/insert-data', [pembelianController::class, 'inpem'])->name('input-pembelian');
+
+    Route::post('/beli-barang/{id}', [pembelianController::class, 'beliBarang'])->name('beli-barang');
 
     // route penjualan
     Route::get('Barang/Jual', [penjualanController::class, 'barangJual'])->name('index-barang-jual');
@@ -62,6 +68,8 @@ Route::middleware(['web', 'auth'])->group(function () {
     // penjualan
     Route::get('Transaksi/Penjualan', [transaksiController::class, 'intrapen'])->name('index-transaksi-penjualan');
     Route::get('Pendapatan', [pendapatanController::class, 'index'])->name('pendapatan');
+    Route::get('Pengeluaran', [pengeluaranController::class, 'index'])->name('pengeluaran');
+
 });
 
 

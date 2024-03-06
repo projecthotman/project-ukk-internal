@@ -19,7 +19,7 @@
                                     <div class="col-md-6">
                                         <div class="card mb-3">
                                             <div class="card-header">
-                                                <h5 class="card-title">SUMBER PENDAPATAN</h5>
+                                                <h5 class="card-title">SUMBER PENGELUARAN</h5>
                                             </div>
                                             <div class="card-body">
                                                 <h5 class="card-title">List Data</h5>
@@ -55,7 +55,7 @@
                                     <div class="card w-75 mb-3 mt-4">
                                         <div class="card-body">
                                             <div class="card-header">
-                                                <h4><strong>Pemasukkan</strong></h4>
+                                                <h4><strong>Pengeluaran</strong></h4>
                                             </div>
 
                                             <div class="col mt-4">
@@ -85,15 +85,14 @@
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($data as $i)
-                                                        <tr>
+                                                         <tr>
                                                             <td>{{ $i->id_transk }}</td>
                                                             <td>{{ $i->tanggal }}</td>
                                                             <td>{{ $i->harga }}</td>
                                                             <td>{{ $i->barang->user->name }}</td>
                                                             <td></td>
-                                                        </tr>
+                                                         </tr>
                                                         @endforeach
-                                                        <!-- Tambahkan baris data sesuai kebutuhan -->
                                                     </tbody>
                                                 </table>
                                             </div>

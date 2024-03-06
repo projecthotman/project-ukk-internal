@@ -17,6 +17,6 @@ class UserModel extends Model implements Authenticatable
 
     public function data()
     {
-        return $this->belongsTo(dataUserModels::class, 'id_user');
+        return $this->belongsTo(dataUserModels::class, 'id_user', 'id');
     }
 }

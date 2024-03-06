@@ -16,6 +16,7 @@ class pembelianController extends Controller
 {
     public function pembelian()
     {
+        // dd($request);
         // Mengambil kategori dengan kolom nama dan id
         $kategori = KategoriModel::select('nama', 'id')->get();
 
@@ -118,6 +119,54 @@ class pembelianController extends Controller
             return redirect()->route('index-barang-beli')->with('error', 'Terjadi kesalahan. Barang gagal dibeli. Pesan Error: ' . $e->getMessage());
         }
     }
+
+    public function beliBarang(Request $request, $id)
+{
+    $uid = Auth::user()->id;
+    $b = BarangModel::find($id);
+    $b->update([
+        'stok' => $b->stok - $request->angka,
+    ]);
+
+    $id_transk = $this->generateIdTransk($b->created_at, $b->id, $uid);
+
+    // Membuat entri pertama dengan nama 'beli' dan id_user yang sama dengan $uid
+    HistoryModel::create([
+        'id_transk' => $id_transk,
+        'id_barang' => $b->id,
+        'id_user' => $uid,
+        'nama' => "beli",
+        'jumlah' => $request->angka,
+        'harga' => $b->harga->harga_j * $request->angka,
+        'tanggal' => now(),
+    ]);
+
+    // Membuat entri kedua dengan nama 'pendapatan' dan id_user yang berbeda
+    HistoryModel::create([
+        'id_transk' => $id_transk, // Tetap menggunakan id_transk yang sama
+        'id_barang' => $b->id,
+        'id_user' => $b->id_user, // Menggunakan id_user dari pemilik barang
+        'nama' => "pendapatan",
+        'jumlah' => $request->angka,
+        'harga' => $b->harga->harga_j * $request->angka,
+        'tanggal' => now(),
+    ]);
+
+    // Hapus barang jika stoknya habis
+    if ($b->stok == 0) {
+        // Hapus catatan terkait dengan barang
+        $b->history()->delete();
+        $b->harga()->delete();
+        // Hapus entri gambar dari database
+        $b->gambar()->delete();
+
+        // Hapus barang itu sendiri
+        $b->delete();
+    }
+
+    return redirect()->route('index-barang-jual')->with('success', 'Barang berhasil dibeli');
+}
+
 
 
 

@@ -31,7 +31,7 @@ class BarangModel extends Model
         return $this->belongsTo(hargaBarangModel::class, 'id', 'id_barang');
     }
     public function history()
-    {
-        return $this->belongsTo(historyModel::class, 'id', 'id_barang');
-    }
+{
+    return $this->hasMany(HistoryModel::class, 'id_barang')->where('nama', 'beli');
+}
 }

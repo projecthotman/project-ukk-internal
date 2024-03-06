@@ -17,7 +17,7 @@
             <svg class="nav-icon">
                 <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-arrow-top') }}"></use>
             </svg> Pendapatan</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">
+        <li class="nav-item"><a class="nav-link" href="{{ route('pengeluaran') }}">
             <svg class="nav-icon">
                 <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-arrow-bottom') }}"></use>
             </svg> Pengeluaran</a></li>

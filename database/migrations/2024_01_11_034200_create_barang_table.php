@@ -18,7 +18,7 @@ class CreateBarangTable extends Migration
             $table->string('nama');
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('kategori_id');
-            $table->enum('status', ['beli', 'jual', 'habis'])->default('jual');
+            $table->enum('status', ['beli', 'jual', 'terjual'])->default('jual');
             $table->text('deskripsi');
             $table->integer('stok');
             $table->timestamps();

@@ -28,10 +28,10 @@
                             <tr>
                                 <td>{{ $n++ }}</td>
                                 <td>{{ Str::limit($i->nama, 25) }}</td>
-                                <td>{{ $i->history->jumlah }}</td>
+                                <td>{{ $i['history'][0]['jumlah'] }}</td>
                                 <td>{{ $i->kategori->nama }}</td>
                                 <td>{{ Str::limit($i->deskripsi, 40) }}</td>
-                                <td>{{number_format($i->history->harga, 0, ',', '.') }}</td>
+                                <td>{{ number_format($i['history'][0]['harga'], 0, ',', '.') }}</td>
                                 <td>{{ $i->created_at->translatedFormat('l - d F Y/H:i:s') }}</td>
                                 <td>
                                     <button class="nav-link nav-group-toggle" type="button" style="border: none; background-color: transparent; margin-left: 25px;">

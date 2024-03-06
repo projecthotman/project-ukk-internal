@@ -29,7 +29,7 @@ class penjualanController extends Controller
         ->where('id_user', $user_id) // Menambahkan kondisi user_id di sini
         ->get();
 
-    return view('layouts.pages.input.barang.post', compact('brnga', 'brngb'));
+    return view('layouts.pages.input.barang.post', compact('brnga', 'brngb', 'user_id'));
 }
 
 
@@ -89,10 +89,13 @@ class penjualanController extends Controller
         ]);
         $id_transk = $this->generateIdTransk($barang->created_at, $barang->id, $user_id);
         // Membuat instance baru dari history
+        foreach ($barang->history as $historyItem) {
+            $tanggal = $historyItem->tanggal;
+        }
         HistoryModel::create([
             'id_user' => $user_id,
             'id_barang' => $barangB->id,
-            'tanggal' => $barang->history->tanggal,
+            'tanggal' => $tanggal,
             'nama' => "jual",
             'jumlah' => $request->stok,
             'id_transk' => $id_transk,
