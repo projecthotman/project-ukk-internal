@@ -13,6 +13,10 @@ class BarangModel extends Model
     protected $table = 'tbl_barang';
     protected $fillable = ['nama', 'kategori_id', 'id_user', 'deskripsi', 'stok', 'status']; // Mengganti 'gambar' menjadi 'gambar_id'
 
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class, 'id_user', 'id');
+    }
     public function kategori()
     {
         return $this->belongsTo(KategoriModel::class, 'kategori_id', 'id');
@@ -27,7 +31,7 @@ class BarangModel extends Model
         return $this->belongsTo(hargaBarangModel::class, 'id', 'id_barang');
     }
     public function history()
-    {
-        return $this->belongsTo(historyModel::class, 'id', 'id_barang');
-    }
+{
+    return $this->hasMany(HistoryModel::class, 'id_barang')->where('nama', 'beli');
+}
 }

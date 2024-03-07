@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class CheckUserRole
 {
@@ -17,7 +18,7 @@ class CheckUserRole
     public function handle(Request $request, Closure $next, $role)
     {
         if ($request->session()->get('userLevel') !== $role) {
-            abort(403, 'Unauthorized.');
+            return Redirect::route('error');
         }
 
         return $next($request);

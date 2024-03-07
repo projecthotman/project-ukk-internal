@@ -13,10 +13,10 @@ class UserModel extends Model implements Authenticatable
     use HasFactory;
 
     protected $table = 'users';
-    protected $fillable = ['name', 'email', 'level', 'password'];
+    protected $fillable = ['name', 'email', 'level', 'saldo', 'password'];
 
     public function data()
     {
-        return $this->belongsTo(dataUserModels::class, 'id_user');
+        return $this->belongsTo(dataUserModels::class, 'id_user', 'id');
     }
 }
